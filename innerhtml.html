@@ -1,0 +1,39 @@
+<html>
+<head><title>Inner HTML</title>
+<script lang="javascript" type="text/javascript">
+function boom()
+{
+	var ih="<tr><td>karan chaudhary</td></tr><tr><td>rohan chaudhary</td></tr><tr><td>yash chaudhary</td></tr>";
+	document.getElementById('hello').innerHTML=ih;
+	//document.write(document.getElementById('hello').innerHTML);
+}
+
+function doSomething()
+{
+	document.getElementById('kcode').innerHTML='Every thing will be alright.';
+}
+</script>
+</head>
+
+<body>
+
+<table id='hello' border="1">
+<tr>
+	<td>karan <input type="button" value="Add to playlist"> </td>
+</tr>
+<tr>
+	<td>cheenu <input type="button" value="Add to playlist">  </td>
+</tr>
+<tr>
+	<td>eva <input type="button" value="Add to playlist">  </td>
+</tr>
+</tr>
+</table>
+
+<input type="button" onclick="boom()" value="change table">
+
+<div id="kcode" onclick="doSomething()">
+This is a clickable text</div>
+
+</body>
+</html>

@@ -1,0 +1,26 @@
+;; This buffer is for notes you don't want to save, and for Lisp evaluation.
+;; If you want to create a file, visit that file with C-x C-f,
+;; then enter the text in that file's own buffer.
+
+So this is about Strongly Connected Components in a graph.
+
+In SCC of a graph, every node is reachable from every other
+node. In case a graph is SCC then above rule is adhered by
+the whole graph. While in case of SCC in a graph, all nodes
+within one such component is reachable from another node in
+that component only.
+ 
+It is important to observe that a node cannot be in multiple
+SCC of a graph. I have proof by contradiction. Lets suppose
+we have a node n which is part of c1 and c2, both. In that 
+case all nodes in c1 can reach n and all nodes in c2 can 
+reach n. But as that is possible, all nodes in c1 can reach
+all nodes in c2 and same is the case for c2 to c1. Which
+means c1 and c2 are same ( c1 U c2 ). Hence, n does not belong
+to both c1 and c2, but c1 U c2.
+
+QED
+
+
+
+Algorithm to be used - Tarjan's algorithm

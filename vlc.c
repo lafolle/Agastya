@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <vlc/vlc.h>
+#include <mysql.h>
+
+char bs[200];
+void catDir(const char *dir,const char *song)
+{
+	int l1=strlen(dir), l2=strlen(song);
+	printf("%s is %d\n%s is %d\n",dir, l1,song ,l2);
+	int i, j;
+	for(i=0; i<l1; i++) bs[i]=dir[i]; // copy dir
+	for(j=0; j<l2; j++) bs[i+j]=song[j]; // append song
+	bs[l1+l2]='\0';
+}
+
+int main(int argc, char* argv[])
+{
+	const char dir[200]="/home/kc/Music/";
+	MYSQL *conn;
+	MYSQL_RES *res;
+	MYSQL_ROW row, song;
+
+	const char *server="localhost";
+	const char *user="root";
+	const char *passwd="passwd";
+	const char *db="songs";
+	char played[200], playing[200];
+
+	conn = mysql_init(NULL);
+
+    libvlc_instance_t *inst;
+    libvlc_media_player_t *mp;
+    libvlc_media_t *m;
+    
+	if(!mysql_real_connect(conn, server, user, passwd, db, 0, NULL, 0)){
+		printf("Err : mysql%s\n", mysql_error(conn));
+		exit(1);
+	}
+    /* Load the VLC engine */
+    inst = libvlc_new (0, NULL);
+ 
+	if(mysql_query(conn, "select sname from playlist order by vote desc")){
+		printf("Err mysql : %s\n", mysql_error(conn));
+		exit(2);
+	}
+	res = mysql_use_result(conn);
+	song = mysql_fetch_row(res);
+	strcpy(played, song[0]);
+	strcpy(playing, song[0]);
+	while(1){
+		
+		catDir(dir, song[0]);
+	    /* Create a new item */
+	    m = libvlc_media_new_path (inst, bs);
+	    /* Create a media player playing environement */
+	    mp = libvlc_media_player_new_from_media (m);
+	    /* No need to keep the media now */
+	    libvlc_media_release (m);
+		/* play the media_player */
+	    libvlc_media_player_play (mp);
+	    sleep (10); /* Let it play a bit */
+	    /* Stop playing */
+	    libvlc_media_player_stop (mp);
+
+		mysql_free_result(res);
+	}
+
+    /* Free the media_player */
+    libvlc_media_player_release (mp);
+    libvlc_release (inst);
+
+    return 0;
+}

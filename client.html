@@ -1,0 +1,69 @@
+<html>
+<head>
+<title>hello kc</title>
+<script lang="javascript" type="text/javascript">
+
+function getHTTPRequestObj()
+{
+	if(window.XMLHttpRequest()) return new XMLHttpRequest();
+	else return new ActiveXObject("Microsoft.XMLHTTP");
+}
+
+# Batch of songs is string
+var sBatch;
+function getBatchOfSongs(request)
+{
+	if(request.readyState == 4 && request.status == 200){
+		sBatch=request.responseText;
+	}
+	return bs;
+}
+
+function fetchNextBatch(currentLimit)
+{
+	url = "sendNextBatch.php?offset=";
+	var request = getHTTPRequestObj();
+	request.open("GET", url+currentLimit, true);
+	request.onreadystatechange=getBatchOfSongs;
+	request.send();
+}
+
+function showPreviousBatchOfSongs()
+{
+}
+
+function showNextBatchOfSongs(currentLimit)
+{
+	fetchNextBatch(currentLimit); // shall set sBatch
+	var ts = document.getElementById('songs');
+	var len=sBatch.length, i=0, ih="<th>Songs you can play</th>", sng="";
+	ts.innerHTML="";
+	for(i=0; i<len; i++){
+		if(sBatch[i]!='^'){
+			sng+=sBatch[i];
+			continue;
+		}
+		sng="";
+		ih+="<td>"+sng.toLowerCase()+"</td>";		
+	}
+	ts.innerHTML=ih;
+}
+
+</script>
+</head>
+<body>
+
+<table id="songs" >
+<th>name</th>
+<tr>
+	<td>Pricillia Ahn - Dream</td>
+</tr>
+<tr>
+	<td>Pricillia Ahn - Rain</td>
+</tr>
+</table>
+
+<button name="Next Button" type="button" onclick="showNextBatchOfSongs()">Next</button>
+<button name="Previous button" type="button" onclick="showPreviousOfSongs()">Previous</button>
+</body>
+</html>

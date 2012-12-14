@@ -1,0 +1,78 @@
+#include<iostream>
+#include<stdio.h>
+#include<algorithm>
+
+using namespace std;
+
+int main()
+{
+    int w,n;
+    int i,j; // For iteration
+    int dyn;
+    int tot_bud=0,tot_fun = 0;
+    scanf("%d",&w);
+    scanf("%d",&n);
+    while(w!=0||n!=0)
+    {
+        int bud[n+1];
+        int val[n+1];
+        for(i=1;i<=n;i++) {  scanf("%d",&bud[i]);  scanf("%d",&val[i]);   }
+
+        int V[n+1][w+1];
+        int keep[n+1][w+1];
+
+        //Make the 1st row and column zero
+        for(i=0;i<=n;i++) {  V[i][0] = 0;  keep[i][0] = 0; }
+        for(i=0;i<=w;i++) {  V[0][i] = 0;  keep[0][i] = 0; }
+
+
+        for(i=1;i<=n;i++)
+            for(j=1;j<=w;j++)
+            {
+
+                if(bud[i]<=j)
+                {
+
+                    dyn = j - bud[i];
+
+                    V[i][j] = max(val[i]+V[i-1][dyn],V[i-1][j]);
+                    //Get the values of the keep matrix
+
+                    if(V[i][j] == V[i-1][j]) { keep[i][j] = 0; }
+                    else {  keep[i][j] = 1; }
+                }
+
+                else{ V[i][j] = V[i-1][j]; keep[i][j] = 0; }
+            }
+
+
+        //Time for traversal through the array
+            int I = n,W = w;
+
+            while(I>0){
+            if(keep[I][W] == 1)
+            {
+                W -= bud[I];
+                tot_bud += bud[I];
+                tot_fun += val[I];
+                I--;
+
+            }
+            else
+            {
+                I--;
+            }
+            }
+            printf("%d %d\n",tot_bud,tot_fun);
+
+
+            tot_bud = 0;
+            tot_fun = 0;
+
+        //Scan the next set of values
+            scanf("%d",&w);
+            scanf("%d",&n);
+
+    }
+    return 0;
+}
