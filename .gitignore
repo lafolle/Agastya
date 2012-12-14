@@ -1,0 +1,8 @@
+# do not include python compiled files
+*.pyc
+
+# do not include object or archive code
+*.[oa]
+
+# do not include backup files
+*~
