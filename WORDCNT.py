@@ -1,54 +1,28 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 
 
-def bigger(a,b):
-    if a>b:
-        return a
-    else:
-        return b
-    
+t = int(raw_input())
 
-def process(s):
-    l=len(s)
-
-    if l==0:
-        return 0
-    
-    c=0
-    plen=0
-    mlen=-23
-    for word in s:
-        wlen=len(word)
-        if wlen==0:
-            continue
-        if plen==0:
-            plen=wlen
-            c+=1
-            continue
-        
-        if plen==wlen:
-            c+=1
+while t>0:
+    sen = raw_input().strip().split()
+    if not sen: continue
+    d = {}
+    x = 1
+    d[len(sen[0])] = 1
+    for i in xrange(1, len(sen)):
+        if len(sen[i])==len(sen[i-1]):
+            x+=1
         else:
-            plen=wlen
-            mlen=bigger(mlen,c)
-            c=1
+            if len(sen[i-1]) in d.keys():
+                d[len(sen[i-1])] = max(d[len(sen[i-1])], x)
+            else:
+                d[len(sen[i-1])] = x
+            x=1
+    if len(sen[i-1]) not in d.keys():
+        d[len(sen[i-1])] = x
+    else:
+        d[len(sen[i-1])] = max(d[len(sen[i-1])], x)
+    print max(d.values())
+    t-=1
 
-    return mlen
-
-if __name__=='__main__':
-    c=0
-    t=int(raw_input())
-    while t>=0:
-        try:
-            s=raw_input()
-            c=process(s.strip().split())
-            if c is not -23:
-                print c
-        except EOFError:
-            k=len(s)
-            str=''
-            for i in range(0,k):
-                str+=s[i]
-            print 'EOF'
-        t-=1
-        
+# AC    
