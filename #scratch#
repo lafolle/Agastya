@@ -1,9 +1,0 @@
-
-
-
-
-Let M[i] be best assignment of i players on the field.
-
-if i==1: then best assignment will be max(all possible positions of player 1)
-
-if i==2: then  
